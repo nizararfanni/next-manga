@@ -95,8 +95,45 @@ export const UseSearchManga = (query: string) => {
     queryKey: ["search", query],
     queryFn: async () => {
       const response = await axiosBaseUrl.get(`search/${query}`);
-      return response.data.data; 
+      return response.data.data;
     },
     enabled: !!query,
+  });
+};
+
+interface MangaByStatus {
+  current_page: number;
+  total_page: number;
+  data: Popular[];
+}
+
+export const UseGetMangaByStatusCompleted = (page: number = 1) => {
+  return useQuery<MangaByStatus>({
+    queryKey: ["status", "completed", page],
+    queryFn: async () => {
+      const response = await axiosBaseUrl.get(`status/completed/${page}`);
+      return response.data.data;
+    },
+  });
+};
+
+export const UseGetMangaByStatusOngoing = (page: number = 1) => {
+  return useQuery<MangaByStatus>({
+    queryKey: ["status", "ongoing", page],
+    queryFn: async () => {
+      const response = await axiosBaseUrl.get(`status/ongoing/${page}`);
+      return response.data.data;
+    },
+  });
+};
+
+
+export const UseGetMangaByGenres = () => {
+  return useQuery<string[]>({
+    queryKey: ["genre"],
+    queryFn: async () => {
+      const response = await axiosBaseUrl.get(`genre`);
+      return response.data.data;
+    },
   });
 };

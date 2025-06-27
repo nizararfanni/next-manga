@@ -28,9 +28,12 @@ export default function PopularPages({
   data = [],
 }: PopularPagesProps) {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-      {title && <h1 className="text-2xl font-bold">{title}</h1>}
-      {description && <p className="text-sm text-gray-500">{description}</p>}
+    <div className="max-w-7xl mx-auto px-4 py-8 space-y-6 bg-gray-700">
+      <div className="space-y-2 text-center text-white font-semibold">
+        {" "}
+        {title && <h1 className="text-2xl font-bold">{title}</h1>}
+        {description && <p className="text-sm">{description}</p>}
+      </div>
 
       {data.length === 0 ? (
         <p className="text-sm text-gray-400 text-center">
@@ -46,7 +49,7 @@ export default function PopularPages({
                   <img
                     src={manga.img}
                     alt={manga.title}
-                    className="w-full h-60 object-cover object-top rounded-t"
+                    className="w-full h-60 object-cover object-top rounded-t p-3 rounded-md overflow-hidden"
                   />
                   <CardHeader>
                     <CardTitle className="text-base">{manga.title}</CardTitle>
