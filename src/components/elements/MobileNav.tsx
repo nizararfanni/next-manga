@@ -1,6 +1,7 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -17,8 +18,33 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from "next/link";
+import Search from "../fragments/home/Search";
+import { UseGetMangaByGenres, UseSearchManga } from "@/services/UseGetAllManga";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const MobileNav = () => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debounceQuery, setDebounceQuery] = useState<string>("");
+
+  //panggil api jika sudah 3 detik
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (searchQuery.trim() !== "") {
+        setDebounceQuery(searchQuery);
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
+
+  const { data: searchManga, isLoading, error } = UseSearchManga(debounceQuery);
+const { data: Genres, isLoading: LoadingGenre } = UseGetMangaByGenres();
   return (
     <div className="md:hidden ">
       <Sheet>
@@ -40,13 +66,11 @@ const MobileNav = () => {
           <SheetDescription className="text-sm text-white p-3 ">
             Navigasi menu cepat untuk menjelajahi manga favoritmu
           </SheetDescription>
-          <div className="flex items-center justify-between w-full mb-2 p-5">
-            {" "}
-            <Input
-              type="text"
-              placeholder="Cari manga..."
-              className="w-full lg:w-72 text-white placeholder:text-gray-400 bg-gray-700 border-none focus:ring-2 focus:ring-purple-500"
-            />
+          <div className="flex items-center justify-center w-full mb-2 p-5">
+            <Search
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            ></Search>
           </div>
           <div className="flex flex-col w-full justify-center items-center ">
             <NavigationMenu viewport={false}>
@@ -56,32 +80,47 @@ const MobileNav = () => {
                     <Link href="/">Home</Link>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <NavigationMenuLink className="hover:bg-purple-100 px-4 py-2">
+                    <NavigationMenuLink
+                      href="/popular"
+                      className="hover:bg-purple-100 px-4 py-2"
+                    >
                       Popular
                     </NavigationMenuLink>
-                    <NavigationMenuLink className="hover:bg-purple-100 px-4 py-2">
+                    <NavigationMenuLink
+                      href="/"
+                      className="hover:bg-purple-100 px-4 py-2"
+                    >
                       Terbaru
                     </NavigationMenuLink>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
 
-                <NavigationMenuItem className="bg-white rounded-md shadow-md flex justify-center items-center w-full">
-                  <NavigationMenuLink asChild>
-                    <Link href="/blog" className="px-4 py-2 block">
-                      Genres
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                <Popover>
+                  <PopoverTrigger className="px-4 py-2 block bg-white text-black rounded-md w-full">
+                    Genres
+                  </PopoverTrigger>
+                  <PopoverContent side="bottom" avoidCollisions={false} className="grid  z-100 grid-cols-4  md:grid-cols-3 place-items-center gap-4 overflow-y-auto h-[350px]">
+                    {Genres?.map((genre: string) => (
+                      <Button
+                        key={genre}
+                        variant="ghost"
+                        className="justify-start text-xs"
+                      >
+                        {genre}
+                      </Button>
+                    ))}
+                  </PopoverContent>
+                </Popover>
 
                 <NavigationMenuItem className="bg-white rounded-md shadow-md flex justify-center items-center w-full">
                   <NavigationMenuTrigger>
                     <Link href="/about">Status Manga</Link>
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <NavigationMenuLink className="px-4 py-2">
+                    <NavigationMenuLink href="/completed" className="px-4 py-2">
                       Completed
                     </NavigationMenuLink>
-                    <NavigationMenuLink className="px-4 py-2">
+                    <NavigationMenuLink href="/ongoing" className="px-4 py-2">
                       Ongoing
                     </NavigationMenuLink>
                   </NavigationMenuContent>
