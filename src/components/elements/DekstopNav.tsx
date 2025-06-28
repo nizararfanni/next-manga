@@ -18,9 +18,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useRouter } from "next/navigation";
 const DekstopNav = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debounceQuery, setDebounceQuery] = useState<string>("");
+  const router = useRouter();
 
   //panggil api jika sudah 3 detik
   useEffect(() => {
@@ -73,7 +75,16 @@ const DekstopNav = () => {
               </PopoverTrigger>
               <PopoverContent className="grid grid-cols-1 md:grid-cols-3 place-items-center gap-4 overflow-y-auto h-[350px]">
                 {Genres?.map((genre: string) => (
-                  <Button key={genre} variant="ghost" className="justify-start">
+                  <Button
+                    key={genre}
+                    variant="ghost"
+                    className="justify-start"
+                    onClick={() =>
+                      router.push(
+                        `/genre/${genre.toLowerCase().replace(/\s+/g, "-")}`
+                      )
+                    }
+                  >
                     {genre}
                   </Button>
                 ))}

@@ -25,10 +25,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useRouter } from "next/navigation";
 
 const MobileNav = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debounceQuery, setDebounceQuery] = useState<string>("");
+  const router = useRouter();
 
   //panggil api jika sudah 3 detik
   useEffect(() => {
@@ -44,7 +46,7 @@ const MobileNav = () => {
   }, [searchQuery]);
 
   const { data: searchManga, isLoading, error } = UseSearchManga(debounceQuery);
-const { data: Genres, isLoading: LoadingGenre } = UseGetMangaByGenres();
+  const { data: Genres, isLoading: LoadingGenre } = UseGetMangaByGenres();
   return (
     <div className="md:hidden ">
       <Sheet>
@@ -99,12 +101,21 @@ const { data: Genres, isLoading: LoadingGenre } = UseGetMangaByGenres();
                   <PopoverTrigger className="px-4 py-2 block bg-white text-black rounded-md w-full">
                     Genres
                   </PopoverTrigger>
-                  <PopoverContent side="bottom" avoidCollisions={false} className="grid  z-100 grid-cols-4  md:grid-cols-3 place-items-center gap-4 overflow-y-auto h-[350px]">
+                  <PopoverContent
+                    side="bottom"
+                    avoidCollisions={false}
+                    className="grid  z-100 grid-cols-4  md:grid-cols-3 place-items-center gap-4 overflow-y-auto h-[350px]"
+                  >
                     {Genres?.map((genre: string) => (
                       <Button
                         key={genre}
                         variant="ghost"
                         className="justify-start text-xs"
+                        onClick={() =>
+                          router.push(
+                            `/genre/${genre.toLowerCase().replace(/\s+/g, "-")}`
+                          )
+                        }
                       >
                         {genre}
                       </Button>
