@@ -127,12 +127,21 @@ export const UseGetMangaByStatusOngoing = (page: number = 1) => {
   });
 };
 
-
 export const UseGetMangaByGenres = () => {
   return useQuery<string[]>({
     queryKey: ["genre"],
     queryFn: async () => {
       const response = await axiosBaseUrl.get(`genre`);
+      return response.data.data;
+    },
+  });
+};
+export const UseGetMangaByGenresValue = (genre: string, page = 1) => {
+  return useQuery<MangaByStatus>({
+    queryKey: ["genre", genre, page],
+    queryFn: async () => {
+      const response = await axiosBaseUrl.get(`genre/${genre}/${page}`);
+      console.log("data apa nih", response.data.data);
       return response.data.data;
     },
   });
