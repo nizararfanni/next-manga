@@ -26,6 +26,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useRouter } from "next/navigation";
+import { RxHamburgerMenu } from "react-icons/rx";
 
 const MobileNav = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -55,7 +56,7 @@ const MobileNav = () => {
             className="flex place-items-center text-center justify-center"
             variant={"ghost"}
           >
-            x
+            <RxHamburgerMenu />
           </Button>
         </SheetTrigger>
         <SheetContent

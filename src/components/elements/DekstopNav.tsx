@@ -107,7 +107,7 @@ const DekstopNav = () => {
 
             <NavigationMenuItem className="bg-white rounded-md shadow-md">
               <NavigationMenuLink asChild>
-                <Link href="/about" className="px-4 py-2 block">
+                <Link href="/About" className="px-4 py-2 block">
                   About
                 </Link>
               </NavigationMenuLink>
