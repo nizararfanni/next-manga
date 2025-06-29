@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const axiosBaseUrl = axios.create({
-  baseURL: "https://laravel-api-manga-scraper.vercel.app/api/api/",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL_MANGA,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
