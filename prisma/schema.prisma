@@ -13,4 +13,13 @@ model users {
   email     String   @unique(map: "Users_email_key")
   password  String
   createdAt DateTime @default(now())
+  refreshTokens RefreshToken[]
+}
+model RefreshToken {
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  user       users    @relation(fields: [userId], references: [id])
+  userId     Int
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
 }
