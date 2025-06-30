@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const page = () => {
@@ -8,6 +9,7 @@ const page = () => {
     password: "",
   });
   const [error, setError] = useState("");
+  const router = useRouter();
 
   //handle user input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +46,7 @@ const page = () => {
         setError(result.message || "Terjadi kesalahan saat login.");
         return;
       }
+      router.push("/");
 
       console.log("Login success", result);
       setFormData({
@@ -75,7 +78,11 @@ const page = () => {
               Sign in to your account
             </h1>
             <p>{error}</p>
-            <form className="space-y-4 md:space-y-6" method="POST" onSubmit={handleLogin}>
+            <form
+              className="space-y-4 md:space-y-6"
+              method="POST"
+              onSubmit={handleLogin}
+            >
               <div>
                 <label
                   htmlFor="email"
